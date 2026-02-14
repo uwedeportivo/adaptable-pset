@@ -2,22 +2,32 @@
 
 #let problem_counter = counter("problem")
 
-#let prob(title: "", color: green, ..body) = {
-  [== Problem #problem_counter.step() #context {problem_counter.display()}]
-  showybox(
-    frame: (
-      border-color: color.darken(10%),
-      title-color: color.lighten(85%),
-      body-color: color.lighten(90%)
-    ),
-    title-style: (
-      color: black,
-      weight: "bold",
-    ),
-    title: title,
-    ..body
+#let prob(title: "", color: green, supplement: [Problem], kind: "problem", ..body) = {
+  figure(
+    context {
+      let problem_counter = counter(figure.where(kind: kind)).at(here()).first()
+      showybox(
+        frame: (
+          border-color: color.darken(10%),
+          title-color: color.lighten(85%),
+          body-color: color.lighten(90%),
+        ),
+        title-style: (
+          color: black,
+          weight: "bold",
+        ),
+        title: [#supplement #problem_counter#{ if title != "" [: #title] }],
+        ..body,
+      )
+    },
+    kind: kind,
+    supplement: supplement,
+    numbering: "1",
+    caption: none,
   )
 }
+
+
 
 #let homework(
   title: "Homework Assignment",
